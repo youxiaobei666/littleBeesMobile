@@ -5,6 +5,8 @@
 预览：
 ![img1](https://pic1.zhimg.com/80/v2-0ca98959cbf3e495e6bbe9b51007b744_r.jpg)
 ![img2](https://picx.zhimg.com/80/v2-93ce06a2244e4f8cfd3ca47030f0075b_r.jpg)
+![img3](https://pic1.zhimg.com/80/v2-2150a109800576ad81ddf1e64ea4e8d0_r.jpg)
+![img4](https://pic4.zhimg.com/80/v2-ef0b16979c01bba5871c1a20d148f523_r.jpg)
 
 ### 1.1 搭建环境
 
@@ -501,7 +503,6 @@ public class Login {
 2. 没注册（新用户）。提示登陆失败。按理是要转发到 inputRegisterMess.jsp去注册。
 
 
-
 ## 6. 浏览手机
 
 用户选择手分类机后,该模块可以用分页的方式显示 mobileform 表中的记录。
@@ -522,6 +523,7 @@ public class Login {
 
 备注：查看分类的 servlet 是 `queryServlet`, 存放数据的 bean 是 `dataBean` ，是一个 sessionBean。
 
+
 ### 6.2 模型（bean）
 
 本模块的 bean ID 是 `dataBaen` (Record_Bean 类的实例)，生命周期是 session ，用于储存数据库中的记录。servlet 控制器 `queryServlet` 用来把数据库查询的记录存在 `dataBean`。
@@ -533,12 +535,60 @@ public class Login {
 - `putGoodsServlet`(PutGoodsToCar 类的实例)，
 
 queryServlet 把数据库查询到的结果存在 bean 中后，重定向到 `byPageShow.jsp` 页面。
-当用户在 `byPageShow.jsp`或者 `showDetail.jsp`页面，商品的后面都跟随着一个 “添加至购物车”的超链接。当点击后， `putGoodsServlet` 控制器将该产品放入用户的购物车，当然此时会向数据库表 `shoppingFrom` 中插入数据。
+当用户在 `byPageShow.jsp`或者 `showDetail.jsp`页面，商品的后面都跟随着一个 “添加至购物车”的超链接。当点击后， `putGoodsServlet` 控制器将该产品放入用户的购物车，**当然此时会向数据库表 `shoppingFrom` 中插入数据**。
+
+## 7. 查看购物车
+
+登录的用户可以通过该模型视图部分 `lookShoppingCart.jsp` 查看购物车中的商品，并选择是否删除某个商品或者更新商品的数量。该模块有 `updateServlet`、`deleteServlet` 和 `buyServlet` 三个控制器。其中 `buyServlet` 负责将用户信息存放到数据库的 `orderform` 表中，即生成订单。
+
+### 7.1 视图
+
+`lookShoppingCart.jsp` 负责显示购物车的商品，修改购物车商品和生成订单的功能
+
+### 7.2 模型（bean）
+
+比较简单，使用 loginBean 验证是否登录即可
+
+### 7.3 控制器（servlet）
+
+三个控制器
+
+1. deleteServlet
+2. updateServlet
+3. buyServlet
+
+当用户点击购物车时，不仅可以看到购物车中的物品，还可以点击删除、更新按钮。分别触发 `deleteServlet `和 `updateServlet`。点击“生成订单”按钮触发 `buyServlet` 负责将购物车的商品信息存在 `orderform` 数据表中。同时删除购物车中的商品。
+
+## 8. 查询手机
+
+本模块用到了 `dataBean` 和 视图 `byPageShow.jsp`。在视图部分 `searchMobile.jsp` 输入查询条件给 servlet 控制器 `searchByConditionServlet`(SearchByCondition类的实例)，`searchByConditionServlet` 控制器负责查询数据库，并将查询结果存在数据模型 dataBaen 中，然后将用户重定向到 `byPageShow.jsp` 页面查看 dataBean 中的数据。
+
+### 8.1 视图（JSP）
+
+视图分为两个JSP 页面 `searchMobile.jsp `和 `byPageShow.jsp` 构成。用户在 `searchMobile.jsp` 页面输入查询信息。提交给 `searchByConditionServlet` 控制器，该控制器将查询的结果存放在 dataBean 中。`byPageShow.jsp` 页面负责显示 dataBean 中的数据。
+
+### 8.2 模型（Bean）
+
+id 为 dataBean 的 session Bean
+
+### 8.3 控制器（servlet）
+
+`searchByConditionServlet` 把数据库 `mobileForm` 表中的数据查询到的记录存在 `dataBean`中，然后重定向 `byPageShow.jsp` 页面
 
 
+## 9. 查询订单
 
+视图部分由 JSP 页面 lookOrderForm.jsp 构成，负责显示用户的订单信息。
 
+使用了 loginBean
 
+这里没有控制器，在 <% %> 里写数据库逻辑
+
+## 10. 退出登录
+
+该模块只有一个名为 exitServlet 的 servlet 控制器。用户单击导航条上的“退出登录”以触发。指责是负责销毁用户的 session 对象。
+
+至此，简单的项目完成
 
 
 

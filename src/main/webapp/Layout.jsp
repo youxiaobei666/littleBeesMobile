@@ -37,7 +37,8 @@
     }
 
     a:hover {
-        font-size: 25px;
+        /*font-size: 25px;*/
+        color: #f5bd44;
     }
 </style>
 
@@ -63,7 +64,7 @@
             <a href="lookOrderForm.jsp">查看订单</a>
         </div>
         <div class="list">
-            <a href="exitServlet.jsp">退出登陆</a>
+            <a href="${pageContext.request.contextPath}/exitServlet">退出登陆</a>
         </div>
         <div class="list">
             <a href="index.jsp">主页</a>

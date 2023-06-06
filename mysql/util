@@ -1,0 +1,11 @@
+//  数据库
+String url = "jdbc:mysql://127.0.0.1/mobileDatabase";
+String username = "root";
+String passwordMySql = "yjc010203.";
+Class.forName("com.mysql.cj.jdbc.Driver"); // 获取引擎，不需要导入，会去jar包中找
+Connection connection =DriverManager.getConnection(url, username, passwordMySql); // 使用 java.sql 包，jdk 自带
+connection.createStatement();
+// 初始化sql语句
+String insertCondition ="";
+PreparedStatement sql = connection.prepareStatement(insertCondition); // 用于向关系型数据库发送预编译的 SQL 语句
+ResultSet rs = sql.executeQuery();
