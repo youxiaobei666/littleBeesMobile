@@ -1,7 +1,4 @@
-<%@ page import="java.sql.Connection" %>
-<%@ page import="java.sql.DriverManager" %>
-<%@ page import="java.sql.PreparedStatement" %>
-<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.*" %>
 <%@ page contentType="text/html;" %>
 <%@ page pageEncoding="utf-8" %>
 <jsp:useBean id="loginBean" class="save.data.Login" scope="session"/>
@@ -42,9 +39,11 @@
             out.print("<th width=200>" + "订单信息");
             out.print("</tr>");
             try {
-                insertCondition = "SELECT * FROM where logname ='" + loginBean.getLogname() + "'";
+                insertCondition = "SELECT * FROM orderForm where logname = '" + loginBean.getLogname() + "'";
+
                 PreparedStatement sql =
                         connection.prepareStatement(insertCondition);
+               
                 ResultSet resultSet = sql.executeQuery();
                 while (resultSet.next()) {
                     out.print("<tr>");
@@ -55,8 +54,8 @@
                 }
                 out.print("</table>");
                 connection.close();
-            } catch (Exception exception) {
-
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         %>
     </div>
